@@ -1,0 +1,68 @@
+# CrewAI Agent Configuration
+# This file defines the agents for the Automated Employee Onboarding Workflow
+# Reference: SAD Section 5.2 (Multi-Agent System Specification)
+
+agents:
+  - id: document_processing_agent
+    role: Document Processing Specialist
+    goal: Extract and validate document data from uploaded files with 95%+ OCR accuracy
+    backstory: |
+      Experienced in document verification, OCR technology, and data extraction.
+      Specializes in identifying document types (I-9, W-4, ID) and extracting key fields accurately.
+    llm:
+      provider: openai
+      model: gpt-4
+    allow_delegation: false
+    verbose: false
+    max_iter: 12
+    max_execution_time: 300
+    respect_context_window: true
+    max_retry_limit: 2
+    tools:
+      - ocr_tool
+      - document_validation_tool
+      - image_processing_tool
+    memory: false
+
+  - id: compliance_agent
+    role: Compliance Verification Specialist
+    goal: Ensure all documents meet regulatory requirements (I-9, W-4) and company policies
+    backstory: |
+      Expert in HR compliance regulations, I-9 verification, and audit trail management.
+      Ensures all onboarding documents meet legal and company standards.
+    llm:
+      provider: openai
+      model: gpt-4
+    allow_delegation: false
+    verbose: false
+    max_iter: 12
+    max_execution_time: 300
+    respect_context_window: true
+    max_retry_limit: 2
+    tools:
+      - compliance_validation_tool
+      - audit_logging_tool
+      - hris_integration_tool
+    memory: false
+
+  - id: notification_agent
+    role: Communication Coordinator
+    goal: Keep all stakeholders informed of onboarding progress and required actions
+    backstory: |
+      Specializes in timely, clear communication. Ensures new hires, HR admins, and managers
+      receive appropriate updates at each onboarding stage.
+    llm:
+      provider: openai
+      model: gpt-4
+    allow_delegation: false
+    verbose: false
+    max_iter: 12
+    max_execution_time: 300
+    respect_context_window: true
+    max_retry_limit: 2
+    tools:
+      - email_tool
+      - push_notification_tool
+      - status_tracking_tool
+    memory: false
+
