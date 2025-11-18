@@ -6,7 +6,7 @@ Native iOS application for new hires to complete onboarding tasks, upload docume
 ## Technology Stack
 - **Framework:** SwiftUI
 - **Minimum iOS:** iOS 16+
-- **Language:** Swift 5.9+
+- **Language:** Swift 5.7+ (compatible with Xcode 14.3)
 - **Architecture:** MVVM with Combine
 
 ## Project Structure
@@ -27,20 +27,72 @@ OnboardingApp/
 
 ## Setup Instructions
 
-1. **Open Project:**
-   - Open `OnboardingApp.xcodeproj` in Xcode (to be created by @frontend.eng)
+### Option 1: Using XcodeGen (Recommended)
 
-2. **Install Dependencies:**
-   - Dependencies will be managed via Swift Package Manager or CocoaPods
-   - See implementation phase for specific dependencies
+1. **Install XcodeGen:**
+   ```bash
+   brew install xcodegen
+   ```
 
-3. **Configure API Endpoint:**
-   - Set API base URL in `APIService.swift`
-   - Configure authentication tokens
+2. **Generate Xcode Project:**
+   ```bash
+   cd ios
+   xcodegen generate
+   ```
 
-4. **Build and Run:**
+3. **Open Project:**
+   - Open `OnboardingApp.xcodeproj` in Xcode
+
+### Option 2: Manual Xcode Project Creation
+
+1. **Create New Project in Xcode:**
+   - Open Xcode
+   - File > New > Project
+   - Choose iOS > App
+   - Name: `OnboardingApp`
+   - Interface: SwiftUI
+   - Language: Swift
+   - Minimum iOS: 16.0
+
+2. **Add Existing Files:**
+   - Delete the default ContentView.swift and OnboardingApp.swift
+   - Right-click on project > Add Files to "OnboardingApp"
+   - Select all folders: `App`, `Models`, `ViewModels`, `Services`, `Views`, `Utilities`
+   - Ensure "Copy items if needed" is unchecked
+   - Ensure "Create groups" is selected
+
+3. **Add Test Target:**
+   - File > New > Target
+   - Choose iOS > Unit Testing Bundle
+   - Name: `OnboardingAppTests`
+   - Add existing test files from `OnboardingAppTests` folder
+
+4. **Configure Info.plist:**
+   - Replace the default Info.plist with the one in the project root
+   - Or add camera/photo library usage descriptions manually
+
+5. **Build and Run:**
    - Select target device/simulator
    - Build and run (Cmd+R)
+
+### Running Tests
+
+1. **Run All Tests:**
+   - Cmd+U to run all tests
+   - Or Product > Test
+
+2. **Run Specific Test:**
+   - Click the diamond icon next to test method
+   - Or right-click > Run
+
+### Test Coverage
+
+The project includes comprehensive tests for:
+- Document model and types
+- DocumentService (image processing, validation)
+- DocumentUploadViewModel (state management, upload flow)
+
+All tests follow TDD principles and should pass with the current implementation.
 
 ## Key Features (MVP)
 - Document upload with camera capture
