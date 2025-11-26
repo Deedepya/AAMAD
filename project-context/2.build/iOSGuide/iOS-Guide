@@ -4,7 +4,7 @@
 Before starting any work, make sure to fully understand understand the architecture and development plan
 
 - **Action**: Read the following document 
-  - [Front-End Design Guide for iOS](@front-end-iOS-DevelopmentPlan.md)
+  - [Front-End Design Guide for iOS](front-end-iOS-DevelopmentPlan.md)
 
 ## 2. Create the iOS Code Files
 With the design, architecture, development plan guidelines in mind, start developing the necessary code files for the project.
@@ -15,7 +15,7 @@ With the design, architecture, development plan guidelines in mind, start develo
 Once the code files have been created, you'll need to add them to the Xcode project.
 
 - **Action**: Follow the instructions in the guide below to add your files to Xcode:
-  - [Add Documents to Xcode Guide](../../ios/build/AddDocumentsToXcodeGuide.md)
+  - [Add Documents to Xcode Guide](AddDocumentsToXcodeGuide.md)
 
 Please follow these steps carefully to ensure a smooth integration into the project.
 
