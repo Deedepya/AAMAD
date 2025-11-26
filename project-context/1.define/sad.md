@@ -437,9 +437,16 @@ OnboardingApp/
 
 **Progress Tracking Dashboard:**
 1. **Task List View:** List of onboarding tasks with completion status
-2. **Progress Indicator:** Visual progress bar (e.g., "3 of 5 tasks completed")
-3. **Status Badges:** Color-coded status (pending, in-progress, completed, error)
-4. **Refresh Control:** Pull-to-refresh for real-time updates
+2. **Task Status Lists:** Segmented or tabbed views that group tasks into **Pending**, **In Progress**, and **Accomplished/Completed** lists, backed by the `status` field on `OnboardingTask`
+3. **Progress Indicator:** Visual progress bar (e.g., "3 of 5 tasks completed")
+4. **Status Badges:** Color-coded status (pending, in-progress, completed, error)
+5. **Refresh Control:** Pull-to-refresh for real-time updates
+
+**User Profile View:**
+1. **Profile Summary:** Display key user attributes (first name, last name, email) sourced from the `User` model / `users` table
+2. **Employment & Onboarding Status:** Show high-level onboarding status (e.g., Not Started, In Progress, Completed) derived from task completion, and optionally role (e.g., `new_hire`)
+3. **HR Details (MVP-lite):** Read-only display of assigned HR contact or manager name if available
+4. **Security & Privacy:** No sensitive compliance or document metadata is shown directly in the profile; link out to document/task views for detailed information
 
 **Navigation Structure:**
 - **Tab Bar:** Home (Progress), Documents, Profile
@@ -457,7 +464,7 @@ OnboardingApp/
 **Key Endpoints:**
 - `POST /documents/upload` - Upload document with multipart/form-data
 - `GET /onboarding/status` - Retrieve current onboarding progress
-- `GET /tasks` - List all onboarding tasks
+- `GET /tasks` - List all onboarding tasks (client filters and renders by status: pending, in_progress, completed)
 - `POST /tasks/{id}/complete` - Mark task as complete
 
 **Real-Time Updates:**
@@ -480,6 +487,23 @@ OnboardingApp/
 - Camera permission requested only when needed
 - Document access limited to app sandbox
 - User consent for data sharing with HRIS
+
+### 6.6 Navigation Structure
+
+The iOS app follows a simple, consistent navigation structure to make onboarding tasks and profile information easy to find:
+
+- **Tab Bar Navigation:**
+  - **Home (Progress):** Default landing tab showing the Progress Dashboard, including task status lists (Pending, In Progress, Accomplished/Completed).
+  - **Documents:** Entry point for document capture, review, and upload flows.
+  - **Profile:** Entry point for the User Profile View, showing user details and high-level onboarding status.
+
+- **Navigation Stack:**
+  - Document flows follow a stack pattern: **Document Upload → Document Review → Confirmation**.
+  - Progress-related detail views (e.g., individual task detail) are pushed from the Home (Progress) tab.
+
+- **Modals & Sheets:**
+  - **Error dialogs:** Blocking alerts for critical failures (e.g., upload failure, authentication issues).
+  - **Success confirmations:** Non-blocking sheets or toasts confirming successful uploads or task completion.
 
 ---
 
