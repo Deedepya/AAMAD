@@ -7,6 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F3566312ED62F78000B5B25 /* DocumentReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F35662B2ED62F78000B5B25 /* DocumentReviewView.swift */; };
+		3F3566322ED62F78000B5B25 /* DocumentUploadProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F35662C2ED62F78000B5B25 /* DocumentUploadProgressView.swift */; };
+		3F3566332ED62F78000B5B25 /* DocumentCaptureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F35662D2ED62F78000B5B25 /* DocumentCaptureView.swift */; };
+		3F3566342ED62F78000B5B25 /* DocumentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F35662F2ED62F78000B5B25 /* DocumentService.swift */; };
+		3F3566352ED62F78000B5B26 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3566302ED62F78000B5B26 /* Document.swift */; };
+		3F3566362ED62F78000B5B27 /* DocumentProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3566312ED62F78000B5B27 /* DocumentProcessor.swift */; };
+		3F3566372ED62F78000B5B28 /* DocumentUploadViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3566322ED62F78000B5B28 /* DocumentUploadViewModel.swift */; };
+		3F3566392ED62F78000B5B30 /* DocumentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3566342ED62F78000B5B30 /* DocumentTests.swift */; };
+		3F35663A2ED62F78000B5B31 /* DocumentServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3566352ED62F78000B5B31 /* DocumentServiceTests.swift */; };
+		3F35663B2ED62F78000B5B32 /* DocumentProcessorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3566362ED62F78000B5B32 /* DocumentProcessorTests.swift */; };
+		3F35663C2ED62F78000B5B33 /* DocumentUploadViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3566372ED62F78000B5B33 /* DocumentUploadViewModelTests.swift */; };
 		3FFB8D972ED628AB00BBAF5B /* OnboardingiOSAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFB8D962ED628AB00BBAF5B /* OnboardingiOSAppApp.swift */; };
 		3FFB8D992ED628AB00BBAF5B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFB8D982ED628AB00BBAF5B /* ContentView.swift */; };
 		3FFB8D9B2ED628AC00BBAF5B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3FFB8D9A2ED628AC00BBAF5B /* Assets.xcassets */; };
@@ -34,6 +45,18 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3F35662B2ED62F78000B5B25 /* DocumentReviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentReviewView.swift; sourceTree = "<group>"; };
+		3F35662C2ED62F78000B5B25 /* DocumentUploadProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentUploadProgressView.swift; sourceTree = "<group>"; };
+		3F35662D2ED62F78000B5B25 /* DocumentCaptureView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentCaptureView.swift; sourceTree = "<group>"; };
+		3F35662F2ED62F78000B5B25 /* DocumentService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentService.swift; sourceTree = "<group>"; };
+		3F3566302ED62F78000B5B26 /* Document.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
+		3F3566312ED62F78000B5B27 /* DocumentProcessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentProcessor.swift; sourceTree = "<group>"; };
+		3F3566322ED62F78000B5B28 /* DocumentUploadViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentUploadViewModel.swift; sourceTree = "<group>"; };
+		3F3566332ED62F78000B5B29 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3F3566342ED62F78000B5B30 /* DocumentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentTests.swift; sourceTree = "<group>"; };
+		3F3566352ED62F78000B5B31 /* DocumentServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentServiceTests.swift; sourceTree = "<group>"; };
+		3F3566362ED62F78000B5B32 /* DocumentProcessorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentProcessorTests.swift; sourceTree = "<group>"; };
+		3F3566372ED62F78000B5B33 /* DocumentUploadViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentUploadViewModelTests.swift; sourceTree = "<group>"; };
 		3FFB8D932ED628AB00BBAF5B /* OnboardingiOSApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OnboardingiOSApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FFB8D962ED628AB00BBAF5B /* OnboardingiOSAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingiOSAppApp.swift; sourceTree = "<group>"; };
 		3FFB8D982ED628AB00BBAF5B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -71,6 +94,72 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3F3566202ED62F78000B5B20 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				3F3566302ED62F78000B5B26 /* Document.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		3F3566212ED62F78000B5B21 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				3F3566312ED62F78000B5B27 /* DocumentProcessor.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		3F3566242ED62F78000B5B25 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				3F35662F2ED62F78000B5B25 /* DocumentService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		3F3566262ED62F78000B5B25 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				3F3566322ED62F78000B5B28 /* DocumentUploadViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		3F3566282ED62F78000B5B25 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				3F3566292ED62F78000B5B25 /* Progress */,
+				3F35662A2ED62F78000B5B25 /* DocumentUpload */,
+				3F35662E2ED62F78000B5B25 /* Common */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		3F3566292ED62F78000B5B25 /* Progress */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Progress;
+			sourceTree = "<group>";
+		};
+		3F35662A2ED62F78000B5B25 /* DocumentUpload */ = {
+			isa = PBXGroup;
+			children = (
+				3F35662B2ED62F78000B5B25 /* DocumentReviewView.swift */,
+				3F35662C2ED62F78000B5B25 /* DocumentUploadProgressView.swift */,
+				3F35662D2ED62F78000B5B25 /* DocumentCaptureView.swift */,
+			);
+			path = DocumentUpload;
+			sourceTree = "<group>";
+		};
+		3F35662E2ED62F78000B5B25 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
 		3FFB8D8A2ED628AB00BBAF5B = {
 			isa = PBXGroup;
 			children = (
@@ -96,6 +185,12 @@
 			children = (
 				3FFB8D962ED628AB00BBAF5B /* OnboardingiOSAppApp.swift */,
 				3FFB8D982ED628AB00BBAF5B /* ContentView.swift */,
+				3F3566202ED62F78000B5B20 /* Models */,
+				3F3566212ED62F78000B5B21 /* Utilities */,
+				3F3566242ED62F78000B5B25 /* Services */,
+				3F3566262ED62F78000B5B25 /* ViewModels */,
+				3F3566282ED62F78000B5B25 /* Views */,
+				3F3566332ED62F78000B5B29 /* Info.plist */,
 				3FFB8D9A2ED628AC00BBAF5B /* Assets.xcassets */,
 				3FFB8D9C2ED628AC00BBAF5B /* Preview Content */,
 			);
@@ -110,10 +205,46 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		3F3566222ED62F78000B5B22 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				3F3566342ED62F78000B5B30 /* DocumentTests.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		3F3566232ED62F78000B5B23 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				3F3566352ED62F78000B5B31 /* DocumentServiceTests.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		3F3566252ED62F78000B5B24 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				3F3566362ED62F78000B5B32 /* DocumentProcessorTests.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		3F3566272ED62F78000B5B26 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				3F3566372ED62F78000B5B33 /* DocumentUploadViewModelTests.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 		3FFB8DA62ED628AC00BBAF5B /* OnboardingiOSAppTests */ = {
 			isa = PBXGroup;
 			children = (
 				3FFB8DA72ED628AC00BBAF5B /* OnboardingiOSAppTests.swift */,
+				3F3566222ED62F78000B5B22 /* Models */,
+				3F3566232ED62F78000B5B23 /* Services */,
+				3F3566252ED62F78000B5B24 /* Utilities */,
+				3F3566272ED62F78000B5B26 /* ViewModels */,
 			);
 			path = OnboardingiOSAppTests;
 			sourceTree = "<group>";
@@ -257,8 +388,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F3566322ED62F78000B5B25 /* DocumentUploadProgressView.swift in Sources */,
+				3F3566332ED62F78000B5B25 /* DocumentCaptureView.swift in Sources */,
+				3F3566342ED62F78000B5B25 /* DocumentService.swift in Sources */,
+				3F3566352ED62F78000B5B26 /* Document.swift in Sources */,
+				3F3566362ED62F78000B5B27 /* DocumentProcessor.swift in Sources */,
+				3F3566372ED62F78000B5B28 /* DocumentUploadViewModel.swift in Sources */,
 				3FFB8D992ED628AB00BBAF5B /* ContentView.swift in Sources */,
 				3FFB8D972ED628AB00BBAF5B /* OnboardingiOSAppApp.swift in Sources */,
+				3F3566312ED62F78000B5B25 /* DocumentReviewView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -266,6 +404,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F3566392ED62F78000B5B30 /* DocumentTests.swift in Sources */,
+				3F35663A2ED62F78000B5B31 /* DocumentServiceTests.swift in Sources */,
+				3F35663B2ED62F78000B5B32 /* DocumentProcessorTests.swift in Sources */,
+				3F35663C2ED62F78000B5B33 /* DocumentUploadViewModelTests.swift in Sources */,
 				3FFB8DA82ED628AC00BBAF5B /* OnboardingiOSAppTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
