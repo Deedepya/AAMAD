@@ -5,226 +5,120 @@
 - SAD: `project-context/1.define/sad.md`
 - Development Plan: `project-context/2.build/front-end-iOS-Context.md`
 
+## Table of Contents
+
+1. **MVP Features (To Be Built):** Document Upload Experience, Task List Management, User Profile Overview, Shared Components & Infrastructure, App Composition & Navigation, Design System & UI, Security & Privacy, Real-Time Updates & Notifications, Accessibility, Error Handling
+2. **Future Features (Phase 2+):** Advanced Features, Mobile Enhancements, Integration Features, Dashboard Features, Additional Features
+3. **Feature Summary by Priority**
+4. **Feature Status Legend**
+5. **Notes**
+
 ---
 
 ## MVP Features (To Be Built)
 
-### 1. Document Upload & Verification
+### 1. Document Upload Experience
 
-#### 1.1 Document Capture
-- ☐ Native iOS camera interface
+- ☐ Document capture with native iOS camera
 - ☐ Camera permission handling
 - ☐ Document type selection (I-9, W-4, Driver's License, Passport, Social Security Card)
-- ☐ Real-time camera preview
-- ☐ Capture button with haptic feedback
-- ☐ Flash toggle
-- ☐ Document alignment guides/overlays
-- ☐ Image quality validation (minimum resolution, file size)
-- ☐ Clear positioning instructions
-
-#### 1.2 Document Review
-- ☐ Document image preview with zoom capability
-- ☐ Document type confirmation
-- ☐ Retake option
-- ☐ Upload confirmation button
-- ☐ Image metadata display (size, resolution)
-- ☐ Scrollable image view
-- ☐ Action buttons (Retake, Upload, Cancel)
-
-#### 1.3 Document Upload Progress
-- ☐ Progress bar with percentage indicator
-- ☐ Upload status messages
-- ☐ Success/error state handling
-- ☐ Auto-navigation on completion
-- ☐ Error retry button
-- ☐ Circular or linear progress indicator
-
-#### 1.4 Document Processing
-- ☐ Image compression
-- ☐ Image format conversion
-- ☐ Document metadata extraction
+- ☐ Document review and preview with zoom
+- ☐ Document upload progress tracking
+- ☐ Image compression and validation
 - ☐ File size validation (10MB limit per SAD)
-- ☐ Secure document encryption
+- ☐ Document processing and metadata extraction
+- ☐ Upload success/error handling
 
 ---
 
-### 2. Progress Tracking & Dashboard
+### 2. Task List Management
 
-#### 2.1 Progress Dashboard
-- ☐ Overall progress percentage display
-- ☐ Task completion count (e.g., "3 of 5 tasks completed")
-- ☐ Compliance status summary
-- ☐ Next action recommendations
+- ☐ Progress dashboard with overall completion percentage
+- ☐ Task list display with status indicators
+- ☐ Task detail view
+- ☐ Task filtering and sorting
+- ☐ Task status updates
 - ☐ Pull-to-refresh for status updates
-- ☐ Large progress circle or bar visualization
-- ☐ Task summary cards
-- ☐ Status badges (color-coded)
-- ☐ Navigation to task list
-
-#### 2.2 Task List Management
-- ☐ Task name and description display
-- ☐ Status badges (pending, in-progress, completed, error)
-- ☐ Due date display
-- ☐ Task action buttons (Start, Complete, View Details)
-- ☐ Filtering by status
-- ☐ Sorting by due date or priority
-- ☐ Swipe actions for quick actions
-- ☐ Empty state when no tasks
-- ☐ Real-time task status updates
-
-#### 2.3 Progress Indicators
-- ☐ Animated progress updates
-- ☐ Customizable colors and styles
-- ☐ Percentage or fraction display
-- ☐ Smooth animation transitions
-- ☐ Accessible labels
+- ☐ Real-time task synchronization
 
 ---
 
-### 3. User Interface Components
+### 3. User Profile Overview
 
-#### 3.1 Common UI Components
-- ☐ Loading spinner with optional message
-- ☐ Full-screen and inline loading variants
-- ☐ Error display with retry option
-- ☐ Error message display
-- ☐ Dismiss option for errors
-- ☐ Error icon
-- ☐ Color-coded status badges
-- ☐ Status text (Pending, In Progress, Completed, Error)
-- ☐ Icon support for badges
-- ☐ Empty state placeholders
-- ☐ Empty state icons/illustrations
-- ☐ Empty state action buttons
+- ☐ User profile display (stub for MVP)
+- ☐ User name and email display
+- ☐ Profile picture placeholder
+- **Note:** Full profile management deferred to Phase 2
 
-#### 3.2 Navigation
-- ☐ Tab bar navigation (Home, Documents, Tasks, Profile)
+---
+
+### 4. Shared Components & Infrastructure
+
+- ☐ Reusable UI components (Loading, Error, StatusBadge, EmptyState)
+- ☐ Mock API service layer
+- ☐ Secure storage (Keychain) for authentication tokens
+- ☐ Push notification infrastructure (stub)
+- ☐ Network configuration and utilities
+- ☐ Image processing utilities
+
+---
+
+### 5. App Composition & Navigation
+
+- ☐ App entry point and lifecycle management
+- ☐ Root navigation with TabView (Home, Documents, Tasks, Profile)
+- ☐ Feature coordination and composition
 - ☐ Navigation stack for document upload flow
-- ☐ Modal presentations for dialogs
-- ☐ Error dialogs
-- ☐ Success confirmations
-- ☐ Task detail sheets
+- ☐ Modal presentations for dialogs and confirmations
 
-#### 3.3 Design System
+---
+
+### 6. Design System & UI
+
 - ☐ Color scheme (Primary, Success, Error, Warning, Pending)
 - ☐ Dark mode support
 - ☐ Typography system (SF Pro Display/Text)
 - ☐ Dynamic Type support for accessibility
-- ☐ Consistent spacing (8pt grid system)
-- ☐ Rounded corners (12pt radius)
-- ☐ Subtle shadows for elevation
-- ☐ Smooth animations (0.3s default)
+- ☐ Consistent spacing and layout system
+- ☐ Smooth animations and transitions
 
 ---
 
-### 4. Authentication & Security
+### 7. Security & Privacy
 
-#### 4.1 Secure Storage
-- ☐ Authentication token storage in iOS Keychain
-- ☐ Token retrieval and deletion
-- ☐ Secure key management
-- ☐ Encrypted document preview caching
-- ☐ No sensitive data in UserDefaults
-
-#### 4.2 Network Security
+- ☐ Secure token storage in iOS Keychain
 - ☐ HTTPS only (TLS 1.2+)
-- ☐ Certificate pinning configuration (stub for MVP)
-- ☐ Request/response validation
-- ☐ Secure API communication
-
-#### 4.3 Privacy
-- ☐ Camera permission requested only when needed
+- ☐ Camera permission handling
 - ☐ Document access limited to app sandbox
-- ☐ User consent handling (stub)
 
 ---
 
-### 5. Real-Time Updates & Notifications
+### 8. Real-Time Updates & Notifications
 
-#### 5.1 Status Polling
 - ☐ Automatic status refresh (30-second interval)
 - ☐ Manual refresh via pull-to-refresh
 - ☐ Real-time progress updates
-- ☐ Task status synchronization
-
-#### 5.2 Notification Support
-- ☐ Push notification permission request
-- ☐ APNs registration (stub)
-- ☐ Local notification scheduling (for testing)
-- ☐ Notification handling infrastructure
+- ☐ Push notification infrastructure (stub)
 
 ---
 
-### 6. Data Management
+### 9. Accessibility
 
-#### 6.1 Data Models
-- ☐ Document model
-- ☐ OnboardingTask model
-- ☐ User profile model
-- ☐ ComplianceRecord model
-- ☐ APIResponse wrappers
-
-#### 6.2 State Management (MVVM)
-- ☐ DocumentUploadViewModel
-- ☐ ProgressTrackingViewModel
-- ☐ TaskListViewModel
-- ☐ OnboardingStatusViewModel
-- ☐ Reactive data flow with Combine
-
-#### 6.3 Mock Data Services
-- ☐ Mock API service layer
-- ☐ Mock onboarding status data
-- ☐ Mock task list data
-- ☐ Simulated API delays
-- ☐ Error simulation for testing
-
----
-
-### 7. Accessibility Features
-
-#### 7.1 WCAG 2.1 AA Compliance
-- ☐ Dynamic Type support for all text
-- ☐ VoiceOver labels for all interactive elements
-- ☐ Color contrast ratios meet AA standards
-- ☐ Haptic feedback for important actions
-- ☐ Reduced motion support
-- ☐ Accessibility hints for complex interactions
-- ☐ Semantic colors (not color-only indicators)
+- ☐ WCAG 2.1 AA compliance
+- ☐ Dynamic Type support
+- ☐ VoiceOver labels
+- ☐ Color contrast compliance
+- ☐ Haptic feedback
 - ☐ Minimum touch target sizes (44x44pt)
 
 ---
 
-### 8. Error Handling
+### 10. Error Handling
 
-#### 8.1 Error Management
 - ☐ Structured error responses
 - ☐ User-friendly error messages
 - ☐ Error retry mechanisms
 - ☐ Graceful error state handling
-- ☐ Network error handling
-- ☐ Validation error feedback
-
----
-
-## Stubbed Features (Visual Only, Non-Functional)
-
-### 1. Profile Management
-- 🔲 User profile display (name, email)
-- 🔲 Profile picture placeholder
-- 🔲 Settings button (non-functional)
-- **Note:** Full profile management deferred to Phase 2
-
-### 2. Analytics Dashboard
-- 🔲 "Coming Soon" message
-- 🔲 Visual placeholder for charts/graphs
-- 🔲 Mock analytics interface layout
-- **Note:** Advanced analytics deferred to Phase 2
-
-### 3. Admin Dashboard
-- 🔲 "Admin features coming in Phase 2" message
-- 🔲 Visual mockup of admin interface
-- 🔲 HR admin feature placeholders
-- **Note:** Web admin dashboard deferred to Phase 2
 
 ---
 
@@ -254,38 +148,18 @@
 - 📋 OAuth 2.0 authentication flow
 - 📋 Token refresh mechanism
 
-### 4. Additional Features
+### 4. Dashboard Features
+- 📋 Analytics Dashboard (full functionality)
+- 📋 Admin Dashboard (full functionality)
+- 📋 HR admin features and management interface
+
+### 5. Additional Features
 - 📋 AI Chat Support
 - 📋 Predictive Hiring Analytics
 - 📋 Embedded compliance learning modules
 - 📋 Multi-language support (internationalization)
 - 📋 iPad-specific layouts
 - 📋 Advanced customization and theming
-
----
-
-## Technical Infrastructure Features
-
-### 1. Architecture
-- ☐ MVVM architecture pattern
-- ☐ SwiftUI framework
-- ☐ Combine for reactive programming
-- ☐ Async/Await for network operations
-- ☐ Modular code structure
-
-### 2. Development Tools
-- ☐ Xcode project configuration
-- ☐ Swift Package Manager dependencies
-- ☐ Build configuration management
-- ☐ Environment configuration (dev/prod)
-- ☐ Feature flags (mock API mode)
-
-### 3. Testing Infrastructure
-- ☐ Unit test structure
-- ☐ UI test structure
-- ☐ Mock data for testing
-- ☐ Error state testing
-- ☐ Accessibility testing support
 
 ---
 
