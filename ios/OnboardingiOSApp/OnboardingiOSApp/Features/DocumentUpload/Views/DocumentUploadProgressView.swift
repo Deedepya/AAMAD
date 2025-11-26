@@ -9,7 +9,12 @@ import SwiftUI
 
 /// View for displaying document upload progress
 struct DocumentUploadProgressView: View {
-    @ObservedObject var viewModel: DocumentUploadViewModel
+    @Binding var uploadStatus: UploadStatus
+    @Binding var uploadProgress: Double
+    @Binding var errorMessage: String?
+    var onRetry: () -> Void
+    var onDone: () -> Void
+    
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
@@ -23,7 +28,7 @@ struct DocumentUploadProgressView: View {
             statusMessageView
             
             // Error handling
-            if viewModel.uploadStatus == .error {
+            if uploadStatus == .error {
                 errorView
             }
             
@@ -35,10 +40,11 @@ struct DocumentUploadProgressView: View {
         .padding()
         .navigationTitle("Uploading Document")
         .navigationBarTitleDisplayMode(.inline)
-        .onChange(of: viewModel.uploadStatus) { newStatus in
+        .onChange(of: uploadStatus) { newStatus in
             if newStatus == .success {
                 // Auto-dismiss after a short delay
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                    onDone()
                     dismiss()
                 }
             }
@@ -49,7 +55,7 @@ struct DocumentUploadProgressView: View {
     
     private var progressIndicatorView: some View {
         VStack(spacing: 16) {
-            if viewModel.uploadStatus == .uploading {
+            if uploadStatus == .uploading {
                 // Circular progress indicator
                 ZStack {
                     Circle()
@@ -57,22 +63,22 @@ struct DocumentUploadProgressView: View {
                         .frame(width: 120, height: 120)
                     
                     Circle()
-                        .trim(from: 0, to: viewModel.uploadProgress)
+                        .trim(from: 0, to: uploadProgress)
                         .stroke(Color.blue, style: StrokeStyle(lineWidth: 8, lineCap: .round))
                         .frame(width: 120, height: 120)
                         .rotationEffect(.degrees(-90))
-                        .animation(.linear, value: viewModel.uploadProgress)
+                        .animation(.linear, value: uploadProgress)
                     
-                    Text("\(Int(viewModel.uploadProgress * 100))%")
+                    Text("\(Int(uploadProgress * 100))%")
                         .font(.title2)
                         .fontWeight(.semibold)
                 }
-            } else if viewModel.uploadStatus == .success {
+            } else if uploadStatus == .success {
                 // Success indicator
                 Image(systemName: "checkmark.circle.fill")
                     .font(.system(size: 80))
                     .foregroundColor(.green)
-            } else if viewModel.uploadStatus == .error {
+            } else if uploadStatus == .error {
                 // Error indicator
                 Image(systemName: "xmark.circle.fill")
                     .font(.system(size: 80))
@@ -102,7 +108,7 @@ struct DocumentUploadProgressView: View {
     }
     
     private var statusTitle: String {
-        switch viewModel.uploadStatus {
+        switch uploadStatus {
         case .idle:
             return "Ready to Upload"
         case .uploading:
@@ -115,7 +121,7 @@ struct DocumentUploadProgressView: View {
     }
     
     private var statusMessage: String {
-        switch viewModel.uploadStatus {
+        switch uploadStatus {
         case .idle:
             return "Tap upload to begin"
         case .uploading:
@@ -123,7 +129,7 @@ struct DocumentUploadProgressView: View {
         case .success:
             return "Your document has been successfully uploaded and is being processed"
         case .error:
-            return viewModel.errorMessage ?? "An error occurred during upload"
+            return errorMessage ?? "An error occurred during upload"
         }
     }
     
@@ -131,7 +137,7 @@ struct DocumentUploadProgressView: View {
     
     private var errorView: some View {
         VStack(spacing: 12) {
-            if let errorMessage = viewModel.errorMessage {
+            if let errorMessage = errorMessage {
                 Text(errorMessage)
                     .font(.subheadline)
                     .foregroundColor(.red)
@@ -142,9 +148,7 @@ struct DocumentUploadProgressView: View {
             }
             
             Button(action: {
-                Task {
-                    await viewModel.uploadDocument()
-                }
+                onRetry()
             }) {
                 HStack {
                     Image(systemName: "arrow.clockwise")
@@ -164,9 +168,9 @@ struct DocumentUploadProgressView: View {
     
     private var actionButtonsView: some View {
         VStack(spacing: 12) {
-            if viewModel.uploadStatus == .success {
+            if uploadStatus == .success {
                 Button(action: {
-                    viewModel.reset()
+                    onDone()
                     dismiss()
                 }) {
                     Text("Done")
@@ -178,7 +182,7 @@ struct DocumentUploadProgressView: View {
                         .background(Color.blue)
                         .cornerRadius(12)
                 }
-            } else if viewModel.uploadStatus == .error {
+            } else if uploadStatus == .error {
                 Button(action: {
                     dismiss()
                 }) {
@@ -200,8 +204,13 @@ struct DocumentUploadProgressView: View {
 struct DocumentUploadProgressView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            DocumentUploadProgressView(viewModel: DocumentUploadViewModel())
+            DocumentUploadProgressView(
+                uploadStatus: .constant(.uploading),
+                uploadProgress: .constant(0.5),
+                errorMessage: .constant(nil),
+                onRetry: {},
+                onDone: {}
+            )
         }
     }
 }
-

@@ -8,10 +8,21 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject private var documentUploadViewModel = DocumentUploadViewModel()
+    // Document Upload State
+    @State private var selectedDocumentType: DocumentType?
+    @State private var capturedImage: UIImage?
+    @State private var uploadStatus: UploadStatus = .idle
+    @State private var uploadProgress: Double = 0.0
+    @State private var errorMessage: String?
+    @State private var uploadedDocument: Document?
+    
+    // Navigation State
     @State private var showDocumentCapture = false
     @State private var showDocumentReview = false
     @State private var showUploadProgress = false
+    
+    // Services
+    private let documentService: DocumentServiceProtocol = DocumentService()
     
     var body: some View {
         NavigationStack {
@@ -36,28 +47,54 @@ struct ContentView: View {
             }
         }
         .sheet(isPresented: $showDocumentCapture) {
-            DocumentCaptureView(viewModel: documentUploadViewModel)
-                .onChange(of: documentUploadViewModel.capturedImage) { image in
-                    if image != nil {
-                        showDocumentCapture = false
-                        showDocumentReview = true
-                    }
+            DocumentCaptureView(
+                selectedDocumentType: $selectedDocumentType,
+                capturedImage: $capturedImage
+            )
+            .onChange(of: capturedImage) { image in
+                if image != nil {
+                    showDocumentCapture = false
+                    showDocumentReview = true
                 }
+            }
         }
         .sheet(isPresented: $showDocumentReview) {
             NavigationStack {
-                DocumentReviewView(viewModel: documentUploadViewModel)
-                    .onChange(of: documentUploadViewModel.uploadStatus) { status in
-                        if status == .uploading {
-                            showDocumentReview = false
-                            showUploadProgress = true
+                DocumentReviewView(
+                    capturedImage: $capturedImage,
+                    selectedDocumentType: $selectedDocumentType,
+                    onRetake: {
+                        retakeImage()
+                    },
+                    onUpload: {
+                        Task {
+                            await uploadDocument()
                         }
                     }
+                )
+                .onChange(of: uploadStatus) { status in
+                    if status == .uploading {
+                        showDocumentReview = false
+                        showUploadProgress = true
+                    }
+                }
             }
         }
         .sheet(isPresented: $showUploadProgress) {
             NavigationStack {
-                DocumentUploadProgressView(viewModel: documentUploadViewModel)
+                DocumentUploadProgressView(
+                    uploadStatus: $uploadStatus,
+                    uploadProgress: $uploadProgress,
+                    errorMessage: $errorMessage,
+                    onRetry: {
+                        Task {
+                            await uploadDocument()
+                        }
+                    },
+                    onDone: {
+                        resetUploadState()
+                    }
+                )
             }
         }
     }
@@ -159,7 +196,7 @@ struct ContentView: View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 16) {
-                    if documentUploadViewModel.uploadedDocument == nil {
+                    if uploadedDocument == nil {
                         emptyDocumentsView
                     } else {
                         documentListView
@@ -211,7 +248,7 @@ struct ContentView: View {
     
     private var documentListView: some View {
         VStack(spacing: 12) {
-            if let document = documentUploadViewModel.uploadedDocument {
+            if let document = uploadedDocument {
                 DocumentRowView(document: document)
             }
         }
@@ -238,6 +275,71 @@ struct ContentView: View {
             .padding()
             .navigationTitle("Profile")
         }
+    }
+    
+    // MARK: - Document Upload Methods
+    
+    private func retakeImage() {
+        capturedImage = nil
+        errorMessage = nil
+    }
+    
+    private func uploadDocument() async {
+        guard let image = capturedImage,
+              let documentType = selectedDocumentType else {
+            await MainActor.run {
+                errorMessage = "Please select a document type and capture an image"
+                uploadStatus = .error
+            }
+            return
+        }
+        
+        // Validate image
+        let documentService = DocumentService()
+        guard documentService.validateImageResolution(image) else {
+            await MainActor.run {
+                errorMessage = "Image resolution is too low. Please capture a higher quality image."
+                uploadStatus = .error
+            }
+            return
+        }
+        
+        await MainActor.run {
+            uploadStatus = .uploading
+            uploadProgress = 0.0
+            errorMessage = nil
+        }
+        
+        do {
+            let document = try await documentService.uploadDocument(
+                image,
+                documentType: documentType
+            ) { progress in
+                Task { @MainActor in
+                    uploadProgress = progress
+                }
+            }
+            
+            await MainActor.run {
+                uploadedDocument = document
+                uploadStatus = .success
+                uploadProgress = 1.0
+            }
+        } catch {
+            await MainActor.run {
+                errorMessage = error.localizedDescription
+                uploadStatus = .error
+                uploadProgress = 0.0
+            }
+        }
+    }
+    
+    private func resetUploadState() {
+        selectedDocumentType = nil
+        capturedImage = nil
+        uploadStatus = .idle
+        uploadProgress = 0.0
+        errorMessage = nil
     }
 }
 

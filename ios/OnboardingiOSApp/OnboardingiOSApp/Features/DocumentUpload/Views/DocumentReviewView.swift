@@ -9,12 +9,17 @@ import SwiftUI
 
 /// View for reviewing captured document before upload
 struct DocumentReviewView: View {
-    @ObservedObject var viewModel: DocumentUploadViewModel
+    @Binding var capturedImage: UIImage?
+    @Binding var selectedDocumentType: DocumentType?
+    var onRetake: () -> Void
+    var onUpload: () -> Void
+    
     @Environment(\.dismiss) var dismiss
     @State private var scale: CGFloat = 1.0
     @State private var lastScale: CGFloat = 1.0
     @State private var offset: CGSize = .zero
     @State private var lastOffset: CGSize = .zero
+    @State private var isLoading = false
     
     var body: some View {
         NavigationView {
@@ -53,7 +58,7 @@ struct DocumentReviewView: View {
     
     private var documentPreviewView: some View {
         ScrollView([.horizontal, .vertical]) {
-            if let image = viewModel.capturedImage {
+            if let image = capturedImage {
                 Image(uiImage: image)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
@@ -102,7 +107,7 @@ struct DocumentReviewView: View {
                 .font(.caption)
                 .foregroundColor(.secondary)
             
-            if let documentType = viewModel.selectedDocumentType {
+            if let documentType = selectedDocumentType {
                 HStack {
                     Image(systemName: iconForDocumentType(documentType))
                         .foregroundColor(.blue)
@@ -126,7 +131,7 @@ struct DocumentReviewView: View {
                 .font(.caption)
                 .foregroundColor(.secondary)
             
-            if let image = viewModel.capturedImage {
+            if let image = capturedImage {
                 HStack {
                     VStack(alignment: .leading, spacing: 4) {
                         Label("Resolution", systemImage: "photo")
@@ -160,12 +165,16 @@ struct DocumentReviewView: View {
     private var actionButtonsView: some View {
         VStack(spacing: 12) {
             Button(action: {
-                Task {
-                    await viewModel.uploadDocument()
-                }
+                isLoading = true
+                onUpload()
             }) {
                 HStack {
-                    Image(systemName: "arrow.up.circle.fill")
+                    if isLoading {
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                    } else {
+                        Image(systemName: "arrow.up.circle.fill")
+                    }
                     Text("Upload Document")
                 }
                 .font(.body)
@@ -176,10 +185,10 @@ struct DocumentReviewView: View {
                 .background(Color.blue)
                 .cornerRadius(12)
             }
-            .disabled(viewModel.uploadStatus == .uploading)
+            .disabled(isLoading || capturedImage == nil || selectedDocumentType == nil)
             
             Button(action: {
-                viewModel.retakeImage()
+                onRetake()
                 dismiss()
             }) {
                 HStack {
@@ -230,10 +239,11 @@ struct DocumentReviewView: View {
 
 struct DocumentReviewView_Previews: PreviewProvider {
     static var previews: some View {
-        let viewModel = DocumentUploadViewModel()
-        viewModel.selectDocumentType(.i9)
-        viewModel.captureImage(UIImage(systemName: "doc.text.fill") ?? UIImage())
-        return DocumentReviewView(viewModel: viewModel)
+        DocumentReviewView(
+            capturedImage: .constant(UIImage(systemName: "doc.text.fill")),
+            selectedDocumentType: .constant(.i9),
+            onRetake: {},
+            onUpload: {}
+        )
     }
 }
-

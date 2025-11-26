@@ -8,12 +8,20 @@
 import SwiftUI
 import AVFoundation
 
+/// Upload status enumeration
+enum UploadStatus {
+    case idle
+    case uploading
+    case success
+    case error
+}
+
 /// View for capturing documents using the camera
 struct DocumentCaptureView: View {
-    @ObservedObject var viewModel: DocumentUploadViewModel
+    @Binding var selectedDocumentType: DocumentType?
+    @Binding var capturedImage: UIImage?
     @Environment(\.dismiss) var dismiss
     @State private var showCamera = false
-    @State private var showDocumentTypePicker = false
     @State private var cameraPermissionStatus: AVAuthorizationStatus = .notDetermined
     
     var body: some View {
@@ -24,7 +32,7 @@ struct DocumentCaptureView: View {
                 
                 VStack(spacing: 24) {
                     // Document type selection
-                    if viewModel.selectedDocumentType == nil {
+                    if selectedDocumentType == nil {
                         documentTypeSelectionView
                     } else {
                         // Camera interface
@@ -43,7 +51,7 @@ struct DocumentCaptureView: View {
                 }
             }
             .sheet(isPresented: $showCamera) {
-                CameraView(image: $viewModel.capturedImage)
+                CameraView(image: $capturedImage)
             }
             .onAppear {
                 checkCameraPermission()
@@ -62,7 +70,7 @@ struct DocumentCaptureView: View {
             
             ForEach(DocumentType.allCases, id: \.self) { type in
                 Button(action: {
-                    viewModel.selectDocumentType(type)
+                    selectedDocumentType = type
                 }) {
                     HStack {
                         Image(systemName: iconForDocumentType(type))
@@ -95,7 +103,7 @@ struct DocumentCaptureView: View {
         VStack(spacing: 20) {
             // Instructions
             VStack(spacing: 8) {
-                Text("Position your \(viewModel.selectedDocumentType?.rawValue ?? "document")")
+                Text("Position your \(selectedDocumentType?.rawValue ?? "document")")
                     .font(.headline)
                 
                 Text("Ensure the document is flat, well-lit, and fully visible in the frame")
@@ -126,7 +134,7 @@ struct DocumentCaptureView: View {
             // Action buttons
             HStack(spacing: 16) {
                 Button(action: {
-                    viewModel.selectDocumentType(nil)
+                    selectedDocumentType = nil
                 }) {
                     Text("Change Type")
                         .font(.body)
@@ -237,7 +245,9 @@ struct CameraView: UIViewControllerRepresentable {
 
 struct DocumentCaptureView_Previews: PreviewProvider {
     static var previews: some View {
-        DocumentCaptureView(viewModel: DocumentUploadViewModel())
+        DocumentCaptureView(
+            selectedDocumentType: .constant(.i9),
+            capturedImage: .constant(nil)
+        )
     }
 }
-
