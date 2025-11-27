@@ -11,7 +11,7 @@ agents:
       Specializes in identifying document types (I-9, W-4, ID) and extracting key fields accurately.
     llm:
       provider: openai
-      model: gpt-4
+      model: gpt-4o-mini
     allow_delegation: false
     verbose: false
     max_iter: 12
@@ -32,7 +32,7 @@ agents:
       Ensures all onboarding documents meet legal and company standards.
     llm:
       provider: openai
-      model: gpt-4
+      model: gpt-4o-mini
     allow_delegation: false
     verbose: false
     max_iter: 12
@@ -53,7 +53,7 @@ agents:
       receive appropriate updates at each onboarding stage.
     llm:
       provider: openai
-      model: gpt-4
+      model: gpt-4o-mini
     allow_delegation: false
     verbose: false
     max_iter: 12

@@ -14,17 +14,27 @@ from pathlib import Path
 from datetime import datetime
 
 from database import get_db, init_db, User, Document, OnboardingTask, ComplianceRecord, AgentLog
-from crew.crew_config import get_crew
 from utils.storage import get_storage_manager
 from pydantic import BaseModel, EmailStr
 import shutil
 
-# Configure logging
+# Configure logging first
+import logging
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
+
+# Import CrewAI with error handling
+try:
+    from crew.crew_config import get_crew
+    CREWAI_AVAILABLE = True
+except ImportError as e:
+    logger.warning(f"CrewAI not available: {e}. Document processing will be limited.")
+    CREWAI_AVAILABLE = False
+    def get_crew():
+        raise ImportError("CrewAI is not installed. Install with: pip install crewai langchain langchain-openai")
 
 # Initialize FastAPI app
 app = FastAPI(
@@ -50,12 +60,19 @@ async def startup_event():
         init_db()
         logger.info("Database initialized")
         
-        # Pre-load crew configuration
-        get_crew()
-        logger.info("CrewAI crew initialized")
+        # Pre-load crew configuration (if available)
+        if CREWAI_AVAILABLE:
+            try:
+                get_crew()
+                logger.info("CrewAI crew initialized")
+            except Exception as e:
+                logger.warning(f"CrewAI initialization failed: {str(e)}. Some features may be limited.")
+        else:
+            logger.warning("CrewAI not available. Document processing features will be limited.")
     except Exception as e:
         logger.error(f"Startup error: {str(e)}")
-        raise
+        # Don't raise - allow server to start even if some components fail
+        logger.warning("Server starting with limited functionality")
 
 
 # Pydantic models for request/response
@@ -214,6 +231,17 @@ def process_document_with_crew(
     execution_id = str(uuid.uuid4())
     
     try:
+        # Check if CrewAI is available
+        if not CREWAI_AVAILABLE:
+            logger.warning("CrewAI not available. Skipping AI processing.")
+            # Update document status without AI processing
+            document = db.query(Document).filter(Document.id == uuid.UUID(document_id)).first()
+            if document:
+                document.status = "uploaded"  # Mark as uploaded but not processed
+                document.updated_at = datetime.utcnow()
+                db.commit()
+            return
+        
         # Get crew
         crew = get_crew()
         

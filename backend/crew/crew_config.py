@@ -4,14 +4,35 @@
 import yaml
 import os
 from pathlib import Path
-from typing import Dict, List, Any
-from crewai import Agent, Task, Crew, Process
-from crewai_tools import BaseTool
+from typing import Dict, List, Any, Optional
 import logging
-
-from crew.tools import TOOLS_REGISTRY
+import sys
 
 logger = logging.getLogger(__name__)
+
+# Lazy imports for CrewAI (only import when needed)
+# This allows the module to load even if CrewAI has compatibility issues
+Agent = None
+Task = None
+Crew = None
+Process = None
+BaseTool = None
+
+def _import_crewai():
+    """Lazy import CrewAI components"""
+    global Agent, Task, Crew, Process, BaseTool
+    if Agent is None:
+        try:
+            from crewai import Agent, Task, Crew, Process
+            from crewai_tools import BaseTool
+        except ImportError as e:
+            logger.error(f"Failed to import CrewAI: {e}")
+            raise ImportError(
+                f"CrewAI import failed: {e}. "
+                f"Python {sys.version_info.major}.{sys.version_info.minor} detected. "
+                f"CrewAI requires Python 3.10+. Please upgrade Python or use a virtual environment with Python 3.10+."
+            )
+    return Agent, Task, Crew, Process, BaseTool
 
 
 class CrewConfig:
@@ -32,17 +53,27 @@ class CrewConfig:
         self.agents_config_path = self.config_dir / "agents.yaml"
         self.tasks_config_path = self.config_dir / "tasks.yaml"
         
-        self.agents: Dict[str, Agent] = {}
-        self.tasks: List[Task] = []
-        self.crew: Crew = None
+        self.agents: Dict[str, Any] = {}
+        self.tasks: List[Any] = []
+        self.crew: Optional[Any] = None
         
-    def load_agents(self) -> Dict[str, Agent]:
+    def load_agents(self) -> Dict[str, Any]:
         """
         Load agents from YAML configuration.
         
         Returns:
             Dictionary of agent_id -> Agent
         """
+        # Lazy import CrewAI
+        _import_crewai()
+        
+        # Lazy import tools registry
+        try:
+            from crew.tools import TOOLS_REGISTRY
+        except ImportError as e:
+            logger.warning(f"Failed to import tools registry: {e}")
+            TOOLS_REGISTRY = {}
+        
         if not self.agents_config_path.exists():
             raise FileNotFoundError(f"Agents config not found: {self.agents_config_path}")
         
@@ -95,13 +126,16 @@ class CrewConfig:
         
         return self.agents
     
-    def load_tasks(self) -> List[Task]:
+    def load_tasks(self) -> List[Any]:
         """
         Load tasks from YAML configuration.
         
         Returns:
             List of Task objects
         """
+        # Lazy import CrewAI
+        _import_crewai()
+        
         if not self.tasks_config_path.exists():
             raise FileNotFoundError(f"Tasks config not found: {self.tasks_config_path}")
         
@@ -140,7 +174,7 @@ class CrewConfig:
         
         return self.tasks
     
-    def create_crew(self, process: Process = Process.sequential) -> Crew:
+    def create_crew(self, process: Any = None) -> Any:
         """
         Create CrewAI crew from loaded agents and tasks.
         
@@ -150,6 +184,12 @@ class CrewConfig:
         Returns:
             CrewAI Crew instance
         """
+        # Lazy import CrewAI
+        _import_crewai()
+        
+        if process is None:
+            process = Process.sequential
+        
         if not self.agents:
             self.load_agents()
         
@@ -170,7 +210,7 @@ class CrewConfig:
         logger.info(f"Created crew with {len(self.agents)} agents and {len(self.tasks)} tasks")
         return self.crew
     
-    def get_crew(self) -> Crew:
+    def get_crew(self) -> Any:
         """Get or create the crew"""
         if self.crew is None:
             self.create_crew()
@@ -189,7 +229,7 @@ def get_crew_config() -> CrewConfig:
     return _crew_instance
 
 
-def get_crew() -> Crew:
+def get_crew() -> Any:
     """Get or create the crew"""
     return get_crew_config().get_crew()
 

@@ -2,10 +2,17 @@
 # Handles document storage (local for MVP, S3/GCP for production)
 
 import os
-import boto3
 from pathlib import Path
 from typing import Optional
 import logging
+
+# Import boto3 only if needed (optional dependency)
+try:
+    import boto3
+    BOTO3_AVAILABLE = True
+except ImportError:
+    BOTO3_AVAILABLE = False
+    boto3 = None  # Placeholder to prevent NameError
 
 logger = logging.getLogger(__name__)
 
@@ -18,13 +25,22 @@ class StorageManager:
         self.upload_dir = Path(os.getenv("UPLOAD_DIR", "./uploads"))
         
         if self.storage_type == "s3":
-            self.s3_client = boto3.client(
-                "s3",
-                aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
-                aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
-                region_name=os.getenv("AWS_REGION", "us-east-1")
-            )
-            self.s3_bucket = os.getenv("S3_BUCKET_NAME", "onboarding-documents")
+            if not BOTO3_AVAILABLE:
+                logger.warning("S3 storage requested but boto3 not installed. Falling back to local storage.")
+                logger.warning("Install boto3 with: pip install boto3")
+                self.storage_type = "local"  # Fallback to local
+            else:
+                try:
+                    self.s3_client = boto3.client(
+                        "s3",
+                        aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
+                        aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
+                        region_name=os.getenv("AWS_REGION", "us-east-1")
+                    )
+                    self.s3_bucket = os.getenv("S3_BUCKET_NAME", "onboarding-documents")
+                except Exception as e:
+                    logger.warning(f"Failed to initialize S3 client: {e}. Falling back to local storage.")
+                    self.storage_type = "local"
     
     def save_file(self, file_content: bytes, file_name: str, user_id: str) -> str:
         """
@@ -61,6 +77,10 @@ class StorageManager:
     
     def _save_s3(self, file_content: bytes, file_name: str, user_id: str) -> str:
         """Save file to S3"""
+        if not BOTO3_AVAILABLE:
+            logger.error("S3 storage requested but boto3 not available. Cannot save to S3.")
+            raise ImportError("boto3 is required for S3 storage. Install with: pip install boto3")
+        
         s3_key = f"{user_id}/{file_name}"
         
         try:
@@ -90,6 +110,9 @@ class StorageManager:
             # For local storage, return file path (in production, serve via API)
             return file_path
         elif self.storage_type == "s3":
+            if not BOTO3_AVAILABLE:
+                logger.error("S3 storage requested but boto3 not available.")
+                return None
             try:
                 url = self.s3_client.generate_presigned_url(
                     "get_object",
