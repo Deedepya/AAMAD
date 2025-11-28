@@ -7,6 +7,7 @@ import io
 import uuid
 import logging
 from pathlib import Path
+from typing import Optional
 
 from .document_upload_service import (
     DocumentUploadClient,
@@ -26,14 +27,16 @@ class DirectDocumentUploadClient:
     For use in main.py to avoid circular dependencies.
     """
     
-    def __init__(self, storage_manager=None):
+    def __init__(self, storage_manager=None, crewai_service=None):
         """
         Initialize direct upload client.
         
         Args:
             storage_manager: Storage manager instance (optional)
+            crewai_service: CrewAI service instance for document processing (optional)
         """
         self.storage_manager = storage_manager
+        self.crewai_service = crewai_service
     
     async def documentUploadRequest(
         self,
@@ -82,7 +85,38 @@ class DirectDocumentUploadClient:
                     logger.error(f"Failed to save file to storage: {str(e)}")
                     # Continue without storage (for MVP without storage)
             
-            # Return success response
+            # Process document with CrewAI if service is available
+            if self.crewai_service:
+                try:
+                    # Reset file pointer for CrewAI processing
+                    file.seek(0)
+                    
+                    # Process with CrewAI agents
+                    processing_result = await self.crewai_service.process_document(
+                        file=file,
+                        document_type=document_type,
+                        user_id=user_id,
+                        document_id=document_id
+                    )
+                    
+                    logger.info(f"CrewAI processing completed for {document_id}: {processing_result.validation_status}")
+                    
+                    # Return success with processing details
+                    return UploadSuccess(
+                        document_id=document_id,
+                        status="processed",
+                        message=f"Document uploaded and processed successfully. Validation: {processing_result.validation_status}"
+                    )
+                except Exception as e:
+                    logger.error(f"CrewAI processing failed for {document_id}: {str(e)}")
+                    # Continue with basic upload success even if CrewAI fails
+                    return UploadSuccess(
+                        document_id=document_id,
+                        status="uploaded",
+                        message="Document uploaded successfully (processing skipped due to error)"
+                    )
+            
+            # Return success response (no CrewAI processing)
             logger.info(f"Document upload successful: {document_id} (type: {document_type}, user: {user_id})")
             return UploadSuccess(
                 document_id=document_id,

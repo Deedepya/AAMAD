@@ -1,6 +1,7 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException
 from fastapi import Depends
 import io
+import logging
 from fastapi import Request
 
 router = APIRouter()
@@ -21,6 +22,19 @@ async def upload_document(
     """
     Upload a document using the DocumentUploadService
     """
+    # Extract form data fields (FastAPI doesn't auto-extract form fields without Form())
+    # This handles multipart/form-data where user_id and document_type are sent as form fields
+    try:
+        form_data = await request.form()
+        # Override with form data if present
+        if "document_type" in form_data:
+            document_type = form_data["document_type"]
+        if "user_id" in form_data:
+            user_id = form_data["user_id"]
+    except Exception:
+        # If form data can't be read, use defaults/parameters as-is
+        pass
+    
     # Read file content
     file_content = await file.read()
     file_bytes = io.BytesIO(file_content)

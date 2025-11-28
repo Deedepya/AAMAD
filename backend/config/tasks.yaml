@@ -1,5 +1,5 @@
 # CrewAI Task Configuration
-# This file defines the tasks for the Automated Employee Onboarding Workflow
+# This file defines the tasks for Document Upload Processing
 # Reference: SAD Section 5.3 (Task Orchestration Specification)
 
 tasks:
@@ -39,26 +39,6 @@ tasks:
     context:
       - Extracted document data from process_document_upload task
       - User ID and onboarding context
-    output_file: null  # Results stored in database
-    human_input: false
-    async_execution: false
-
-  - id: send_status_notification
-    description: |
-      Send status update notifications to relevant stakeholders (new hire, HR admin, manager).
-      Use email and push notifications as appropriate.
-    agent_id: notification_agent
-    expected_output: |
-      Notification delivery confirmation:
-      {
-        "notifications_sent": [...],
-        "delivery_status": "success|failed",
-        "recipients": [...]
-      }
-    context:
-      - Compliance status from verify_compliance task
-      - User ID and notification preferences
-      - Document processing status
     output_file: null  # Results stored in database
     human_input: false
     async_execution: false

@@ -1,5 +1,5 @@
 # CrewAI Agent Configuration
-# This file defines the agents for the Automated Employee Onboarding Workflow
+# This file defines the agents for Document Upload Processing
 # Reference: SAD Section 5.2 (Multi-Agent System Specification)
 
 agents:
@@ -43,26 +43,5 @@ agents:
       - compliance_validation_tool
       - audit_logging_tool
       - hris_integration_tool
-    memory: false
-
-  - id: notification_agent
-    role: Communication Coordinator
-    goal: Keep all stakeholders informed of onboarding progress and required actions
-    backstory: |
-      Specializes in timely, clear communication. Ensures new hires, HR admins, and managers
-      receive appropriate updates at each onboarding stage.
-    llm:
-      provider: openai
-      model: gpt-4o-mini
-    allow_delegation: false
-    verbose: false
-    max_iter: 12
-    max_execution_time: 300
-    respect_context_window: true
-    max_retry_limit: 2
-    tools:
-      - email_tool
-      - push_notification_tool
-      - status_tracking_tool
     memory: false
 
